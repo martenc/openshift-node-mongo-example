@@ -2,6 +2,9 @@
 //  OpenShift sample Node application
 var express = require('express');
 var fs      = require('fs');
+// Doing this the non-mongojs way
+var mongodb = require('mongodb');
+
 
 /*
 // Depends on mongojs lib being added to 'package.json' so make sure you run:
@@ -17,27 +20,6 @@ if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
 var db = mongojs(connection_string, ['resume']);
 */
 
-// Doing this the non-mongojs way
-/*
-var mongodb = require('mongodb');
-var App = function(){
-
-  // Scope
-  var self = this;
-
-  // Setup
-  self.dbServer = new mongodb.Server(process.env.OPENSHIFT_MONGODB_DB_HOST, parseInt(process.env.OPENSHIFT_MONGODB_DB_PORT));
-  self.db = new mongodb.Db(process.env.OPENSHIFT_APP_NAME, self.dbServer, {auto_reconnect: true});
-  self.dbUser = process.env.OPENSHIFT_MONGODB_DB_USERNAME;
-  self.dbPass = process.env.OPENSHIFT_MONGODB_DB_PASSWORD;
-
-  self.ipaddr  = process.env.OPENSHIFT_INTERNAL_IP;
-  self.port    = parseInt(process.env.OPENSHIFT_INTERNAL_PORT) || 8080;
-
-  if (typeof self.ipaddr === "undefined") {
-    console.warn('No OPENSHIFT_INTERNAL_IP environment variable');
-  };
-*/
 
 /**
  *  Define the sample application.
@@ -46,6 +28,19 @@ var SampleApp = function() {
 
     //  Scope.
     var self = this;
+
+    // Setup
+    self.dbServer = new mongodb.Server(process.env.OPENSHIFT_MONGODB_DB_HOST, parseInt(process.env.OPENSHIFT_MONGODB_DB_PORT));
+    self.db = new mongodb.Db(process.env.OPENSHIFT_APP_NAME, self.dbServer, {auto_reconnect: true});
+    self.dbUser = process.env.OPENSHIFT_MONGODB_DB_USERNAME;
+    self.dbPass = process.env.OPENSHIFT_MONGODB_DB_PASSWORD;
+
+    self.ipaddr  = process.env.OPENSHIFT_INTERNAL_IP;
+    self.port    = parseInt(process.env.OPENSHIFT_INTERNAL_PORT) || 8080;
+
+    if (typeof self.ipaddr === "undefined") {
+        console.warn('No OPENSHIFT_INTERNAL_IP environment variable');
+    };
 
 
     /*  ================================================================  */
@@ -173,16 +168,16 @@ var SampleApp = function() {
     };
 
 
-    // // Logic to open a database connection. We are going to call this outside of app so it is available to all our functions inside.
-    // self.connectDb = function(callback){
-    // self.db.open(function(err, db){
-    //     if(err){ throw err };
-    //     self.db.authenticate(self.dbUser, self.dbPass, {authdb: "admin"},  function(err, res){
-    //         if(err){ throw err };
-    //         callback();
-    //       });
-    //     });
-    // };
+    // Logic to open a database connection. We are going to call this outside of app so it is available to all our functions inside.
+    self.connectDb = function(callback){
+    self.db.open(function(err, db){
+        if(err){ throw err };
+        self.db.authenticate(self.dbUser, self.dbPass, {authdb: "admin"},  function(err, res){
+            if(err){ throw err };
+            callback();
+          });
+        });
+    };
 
 
     /**
