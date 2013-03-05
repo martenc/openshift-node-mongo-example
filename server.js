@@ -18,6 +18,7 @@ var db = mongojs(connection_string, ['resume']);
 */
 
 // Doing this the non-mongojs way
+/*
 var mongodb = require('mongodb');
 var App = function(){
 
@@ -36,7 +37,7 @@ var App = function(){
   if (typeof self.ipaddr === "undefined") {
     console.warn('No OPENSHIFT_INTERNAL_IP environment variable');
   };
-
+*/
 
 /**
  *  Define the sample application.
