@@ -3,6 +3,7 @@
 var express = require('express');
 var fs      = require('fs');
 
+/*
 // Depends on mongojs lib being added to 'package.json' so make sure you run:
 // npm install -S mongojs
 var mongojs = require('mongojs');
@@ -14,10 +15,10 @@ if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
   process.env.OPENSHIFT_APP_NAME;
 }
 var db = mongojs(connection_string, ['resume']);
+*/
 
-
-/* 
 // Doing this the non-mongojs way
+var mongodb = require('mongodb');
 var App = function(){
 
   // Scope
@@ -36,17 +37,6 @@ var App = function(){
     console.warn('No OPENSHIFT_INTERNAL_IP environment variable');
   };
 
-  // Logic to open a database connection. We are going to call this outside of app so it is available to all our functions inside.
-  self.connectDb = function(callback){
-    self.db.open(function(err, db){
-      if(err){ throw err };
-      self.db.authenticate(self.dbUser, self.dbPass, {authdb: "admin"},  function(err, res){
-        if(err){ throw err };
-        callback();
-      });
-    });
-  };
-*/
 
 /**
  *  Define the sample application.
@@ -179,6 +169,18 @@ var SampleApp = function() {
         for (var r in self.routes) {
             self.app.get(r, self.routes[r]);
         }
+    };
+
+
+    // Logic to open a database connection. We are going to call this outside of app so it is available to all our functions inside.
+    self.connectDb = function(callback){
+    self.db.open(function(err, db){
+        if(err){ throw err };
+        self.db.authenticate(self.dbUser, self.dbPass, {authdb: "admin"},  function(err, res){
+            if(err){ throw err };
+            callback();
+          });
+        });
     };
 
 
