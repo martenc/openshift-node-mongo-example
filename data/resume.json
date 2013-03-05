@@ -1,0 +1,23 @@
+{
+    "Resume": [
+        {
+            "name": "Takazo",
+            "summary": "I am an outgoing and energetic (ask anybody) professional, seeking a career that fits my professional skills, personality, and tendencies. I may inspire fear among those who gaze upon me; however, do not underestimate my problem solving abilities. I will bring world domination to your organization."
+        },
+        {
+            "Education": [
+                {
+                    "University": "Madness University - Mars",
+                    "Major": "Philosophy",
+                    "Minor": "Scale Tending"
+                }
+            ],
+            "Skills": [
+                {
+                    "Office Skills": "Office and records manager, databaser, eventer, customer supporter, travel coordinater",
+                    "Computer Skills": "Notepad, Notepad++, Textpad, NoteTextPad"
+                }
+            ]
+        }
+    ]
+}
