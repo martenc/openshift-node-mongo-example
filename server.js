@@ -145,12 +145,12 @@ var SampleApp = function() {
             res.send(self.cache_get('index.html') );
         };
 
-        self.routes['/resume'] = function(req, res){
-            self.db.collection('resume').find().toArray(function(err, names) {
-                res.header("Content-Type:","text/json");
-                res.end(JSON.stringify(names));
-            });
-        };
+        // self.routes['/resume'] = function(req, res){
+        //     self.db.collection('resume').find().toArray(function(err, names) {
+        //         res.header("Content-Type:","text/json");
+        //         res.end(JSON.stringify(names));
+        //     });
+        // };
     };
 
 
